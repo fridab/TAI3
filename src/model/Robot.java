@@ -15,6 +15,7 @@ public class Robot {
     public Robot(int roomSize) {
         heading = newRandomHeading();
         this.room = new Room(roomSize);
+        pos = new Coordinate(2,2);
     }
 
 
@@ -47,6 +48,7 @@ public class Robot {
         }
         //Step
         move();
+        System.out.println("Current position: " + pos + " heading: " + heading);
     }
 
     public void move() {

@@ -36,7 +36,7 @@ public class RobotLocalizer implements EstimatorInterface {
     }
 
     public int[] getCurrentReading() {
-        return new int[0];
+        return new int[2];
     }
 
     public double getCurrentProb(int x, int y) {

@@ -38,4 +38,8 @@ public class Coordinate {
         return this;
     }
 
+    public String toString() {
+        return ("x: " + x + "\t y: " + y);
+    }
+
 }

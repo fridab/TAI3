@@ -13,16 +13,16 @@ public class Room {
     }
 
     public boolean wallEncountered(Coordinate pos, Direction heading) {
-        if (pos.getX() == 0 && heading.equals(Direction.WEST)) {
+        if (pos.getRow() == 0 && heading.equals(Direction.NORTH)) {
             return true;
         }
-        if (pos.getX() == size-1 && heading.equals(Direction.EAST)) {
+        if (pos.getRow() == size-1 && heading.equals(Direction.SOUTH)) {
             return true;
         }
-        if (pos.getY() == 0 && heading.equals(Direction.NORTH)) {
+        if (pos.getCol() == 0 && heading.equals(Direction.WEST)) {
             return true;
         }
-        if (pos.getY() == size -1 && heading.equals(Direction.SOUTH)) {
+        if (pos.getCol() == size -1 && heading.equals(Direction.EAST)) {
             return true;
         }
         return false;

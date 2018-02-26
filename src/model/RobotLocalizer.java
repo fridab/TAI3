@@ -29,6 +29,7 @@ public class RobotLocalizer implements EstimatorInterface {
 
     public void update() {
         r.step();
+        //Sensorn ska uppdateras
     }
 
     public int[] getCurrentTruePosition() {

@@ -1,0 +1,2 @@
+INDEX VERSION 1.129+/Users/yatzima/Documents/TAI3/.metadata/.plugins/org.eclipse.jdt.core
+1411780233.index

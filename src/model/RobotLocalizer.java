@@ -8,9 +8,11 @@ import control.EstimatorInterface;
  */
 public class RobotLocalizer implements EstimatorInterface {
     private Robot r;
+    private Sensor s;
 
-    public RobotLocalizer(Robot r) {
+    public RobotLocalizer(Robot r, Sensor s) {
         this.r = r;
+        this.s = s;
     }
 
 
@@ -36,7 +38,7 @@ public class RobotLocalizer implements EstimatorInterface {
     }
 
     public int[] getCurrentReading() {
-        return new int[2];
+        return s.sensorReading();
     }
 
     public double getCurrentProb(int x, int y) {

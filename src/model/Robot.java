@@ -85,4 +85,12 @@ public class Robot {
     public int getRoomSize() {
         return room.getSize();
     }
+
+    public int[][] getLS(int[] pos){
+        return room.getLS(pos);
+    }
+
+    public int[][] getLS2(int[] pos){
+        return room.getLS2(pos);
+    }
 }

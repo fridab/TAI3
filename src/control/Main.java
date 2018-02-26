@@ -3,6 +3,7 @@ package control;
 import model.DummyLocalizer;
 import model.Robot;
 import model.RobotLocalizer;
+import model.Sensor;
 import view.RobotLocalizationViewer;
 
 public class Main {
@@ -18,9 +19,11 @@ public class Main {
 		 * graphics class.
 		 */
 		//EstimatorInterface l = new DummyLocalizer( 1, 1, 1);
-		EstimatorInterface l = new RobotLocalizer(new Robot(5));
+		Robot r = new Robot(5);
+		EstimatorInterface l = new RobotLocalizer(r, new Sensor(r));
 
 		RobotLocalizationViewer viewer = new RobotLocalizationViewer( l);
+
 
 		/*
 		 * this thread controls the continuous update. If it is not started, 

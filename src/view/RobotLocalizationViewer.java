@@ -89,13 +89,14 @@ public class RobotLocalizationViewer {
 		JButton runButton = new JButton( "Go");
 		runButton.addActionListener( new ActionListener() {
 			public void actionPerformed( ActionEvent e) {
-				setRunFlag( true);
+				setRunFlag( true);System.out.println("Go");
 			}
 		});
 		JButton stopButton = new JButton( "Stop");
 		stopButton.addActionListener( new ActionListener() {
 			public void actionPerformed( ActionEvent e) {
 				setRunFlag( false);
+
 			}
 		});
 
@@ -152,7 +153,7 @@ public class RobotLocalizationViewer {
 	}
 
 	public synchronized void updateOneStep( ){		
-		if( initFlag) {
+		if( runFlag) { //SHOULD BE RUNFLAG IN ORDER TO RUN?
 			loc.update();
 			int[] tXY = loc.getCurrentTruePosition();
 			int[] sXY = loc.getCurrentReading();

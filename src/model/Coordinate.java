@@ -1,45 +1,45 @@
 package model;
 
 public class Coordinate {
-    private int x;
-    private int y;
+    private int row;
+    private int col;
 
-    public Coordinate(int x, int y) {
-        this.x=x;
-        this.y=y;
+    public Coordinate(int row, int col) {
+        this.row=row;
+        this.col=col;
     }
 
     public int[] getPosition() {
-        return new int[]{x, y};
+        return new int[]{row, col};
     }
 
-    public int getX() {
-        return x;
+    public int getRow() {
+        return row;
     }
 
-    public int getY() {
-        return y;
+    public int getCol() {
+        return col;
     }
 
     public Coordinate up() {
-        y--;
+        row--;
         return this;
     }
     public Coordinate right() {
-        x++;
+        col++;
         return this;
     }
     public Coordinate down() {
-        y++;
+        row++;
         return this;
     }
     public Coordinate left() {
-        x--;
+        col--;
         return this;
     }
 
     public String toString() {
-        return ("x: " + x + "\t y: " + y);
+        return ("row: " + row + "\t col: " + col);
     }
 
 }

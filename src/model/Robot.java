@@ -20,7 +20,7 @@ public class Robot {
     }
 
 
-    public Direction newRandomHeading() {
+    public Direction newRandomHeading() { //JUST NU KAN MAN FÅ SAMMA IGEN - SE TILL ATT DET BLIR EN NY
         int choice = rand.nextInt(4);
         Direction newHeading;
         switch(choice) {

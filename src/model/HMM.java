@@ -5,7 +5,7 @@ import java.util.List;
 
 public class HMM {
     private RobotState[] states;    //Possible states
-    private List<Double[]> obsProb; //List with probabilities for all possible observations
+    private List<double[]> obsProb; //List with probabilities for all possible observations
     private Coordinate[] obs;       //Possible observations
     private double[][] T;
     private Robot robot;
@@ -16,7 +16,7 @@ public class HMM {
         initStates();
         setTransitionModel();
         initObservations();
-        obsProb = new ArrayList<Double[20]>(obs.length); //21 possible observations
+        obsProb = new ArrayList<double[]>(obs.length); //21 possible observations
     }
 
     /**

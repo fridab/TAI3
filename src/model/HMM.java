@@ -43,6 +43,6 @@ public class HMM {
      */
     private void setTransitionModel() {
         T = new double[states.length][states.length];
-        
+
     }
 }

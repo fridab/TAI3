@@ -2,7 +2,7 @@ package model;
 
 import java.util.Random;
 
-import static model.Direction.NORTH;
+import static model.Direction.*;
 
 public class Robot {
     private Direction heading;
@@ -13,33 +13,44 @@ public class Robot {
     public static final int headings = 4;
 
     public Robot(int roomSize) {
-        heading = newRandomHeading();
+
         this.room = new Room(roomSize);
         pos = new Coordinate(2,2);
+        heading = newRandomHeading();
     }
 
 
     public Direction newRandomHeading() {
         int choice = rand.nextInt(4);
+        Direction newHeading;
         switch(choice) {
             case 0:
-                return NORTH;
+                newHeading= NORTH;
+                break;
             case 1:
-                return Direction.EAST;
+                newHeading=EAST;
+                break;
             case 2:
-                return Direction.SOUTH;
+                newHeading = SOUTH;
+                break;
             case 3:
-                return Direction.WEST;
+                newHeading = WEST;
+                break;
             default:
-                return null;
+                newHeading = null;
+                break;
         }
+        if(room.wallEncountered(pos, newHeading)){
+            return newRandomHeading();
+        }
+        return newHeading;
     }
 
 
     public void step() {
         //Pick new heading
         if(room.wallEncountered(pos, heading)) {
-            heading = newRandomHeading(); //Can give the same heading with this implementation. FIX THIS.
+            heading = newRandomHeading();
         } else {
             double p = rand.nextDouble();
             if(p<0.3) { //Not encountering a wall, probability of choosing new direction is 0.3
@@ -55,12 +66,16 @@ public class Robot {
         switch(heading) {
             case NORTH:
                 pos = pos.up();
+                break;
             case EAST:
-                pos = pos.left();
+                pos = pos.right();
+                break;
             case SOUTH:
                 pos = pos.down();
+                break;
             case WEST:
-                pos = pos.right();
+                pos = pos.left();
+                break;
         }
     }
     public int[] getPosition() {

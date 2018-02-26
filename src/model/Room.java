@@ -2,7 +2,7 @@ package model;
 
 public class Room {
     private int size;
-    private int[][] room;
+    //private int[][] room;
 
     public Room(int size) {
      this.size = size;
@@ -14,18 +14,18 @@ public class Room {
 
     public boolean wallEncountered(Coordinate pos, Direction heading) {
         if (pos.getX() == 0 && heading.equals(Direction.WEST)) {
-            return false;
+            return true;
         }
         if (pos.getX() == size-1 && heading.equals(Direction.EAST)) {
-            return false;
+            return true;
         }
         if (pos.getY() == 0 && heading.equals(Direction.NORTH)) {
-            return false;
+            return true;
         }
         if (pos.getY() == size -1 && heading.equals(Direction.SOUTH)) {
-            return false;
+            return true;
         }
-        return true;
+        return false;
 
     }
 

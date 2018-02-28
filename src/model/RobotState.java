@@ -20,6 +20,10 @@ public class RobotState {
         return pos.equals(obj.pos) && heading==((RobotState) o).heading;
     }
 
+    public Coordinate getPosition() {
+        return pos;
+    }
+
     /**
      * @param target
      * @return P of getting to target from this state
@@ -35,8 +39,26 @@ public class RobotState {
             return 0;
         }
         if(pos.getRow() == target.pos.getRow()) { //Moving in this row
-            return 0;
+            if(pos.getCol() > target.pos.getCol()) { //Moving east
+                return (heading == 2? 0.7:0.3);
+            }
+            if(pos.getCol() < target.pos.getCol()) { //Moving west
+                return (heading == 4? 0.7:0.3);
+            } else {
+                return 0;
+            }
+
         }
-            return 1;
+        if(pos.getCol() == target.pos.getCol()) { //Moving in this col
+            if (pos.getRow() > target.pos.getRow()) { //Moving south
+                return (heading == 3 ? 0.7 : 0.3);
+            }
+            if (pos.getRow() < target.pos.getRow()) { //Moving north
+                return (heading == 1 ? 0.7 : 0.3);
+            } else {
+                return 0;
+            }
+        }
+        return 3; //Are there any cases we haven't covered?
     }
 }

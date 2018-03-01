@@ -19,16 +19,15 @@ public class HMM {
         initStates();
         setTransitionModel();
         obsProb = new ArrayList<double[]>(obs.length); //21 possible observations
-        initObsProb();
         this.sensor = sensor;
+        initObsProb();
         previousF = new double[states.length];
         for(int i=0; i<previousF.length; i++) {
-            previousF[i]=(1/states.length); //Assuming all states have equal probabilities at first
+            previousF[i]=((double)1/states.length); //Assuming all states have equal probabilities at first
         }
     }
 
     /**
-     * MATRIX CALCULATIONS NEED TO BE IMPLEMENTED, SEE COMMENT
      * Computes all state estimates when given evidence e
      * @param e the evidence/observation
      */
@@ -36,6 +35,10 @@ public class HMM {
         //Find which evidence object we have
         int index = -1;
         for(int i = 0; i<obs.length; i++) {
+            if(obs[i] == null && e == null) {
+                index = i;
+                break;
+            }
             if(obs[i].equals(e)) {
                 index=i;
                 break;
@@ -45,33 +48,102 @@ public class HMM {
         double[][] o = createDiagonalMatrix(obsProb.get(index));
         double[][] tT = transpose(T);
 
-        double[] futureF = new double[states.length];
+        double[][] futureF = new double[1][states.length];
         //futureF = alpha * o*tT* previousF; NEEDS TO BE IMPLEMENTED
-        previousF=futureF;
+        double[][] otT = multiplyMatrices(o, tT);
+        double[][] fMatrix = new double[previousF.length][1];
+        for(int i =0; i<previousF.length; i++) {
+            fMatrix[i][0] = previousF[i];
+        }
+        futureF = multiplyMatrices(otT, fMatrix);
+        futureF = normalize(futureF);
+        for(int i =0; i<futureF.length; i++) {
+            previousF[i]=futureF[i][0];
+        }
+
     }
 
     /**
-     * NEEDS TO BE IMPLEMENTED
      * Creates a diagonal matrix out of the diagonal vector
      * @param vector
      * @return
      */
     private double[][] createDiagonalMatrix(double[] vector) {
         double[][] matrix = new double[vector.length][vector.length];
+        for(int i =0; i<vector.length; i++) {
+            matrix[i][i] = vector[i];
+        }
         return matrix;
     }
 
     /**
-     * NEEDS TO BE IMPLEMENTED
      * Transposes a matrix
      * @param t
      * @return
      */
     private double[][] transpose(double[][] t) {
-        double[][] tT = new double[t.length][t[0].length];
+        double[][] tT = new double[t[0].length][t.length];
+        for(int i =0; i<t.length; i++) {
+            for(int j =0; j<t[0].length;j++) {
+                tT[j][i] = t[i][j];
+            }
+        }
         return tT;
     }
 
+    /**
+     * Multiplies matrices a and b. a needs to have the same number of cols as b has rows
+     * Resulting matrix will have dimension [a.rows b.cols]
+     * @param a matrix a
+     * @param b matrix b
+     * @return matrix ab
+     */
+    private double[][] multiplyMatrices(double[][] a, double[][] b) {
+        if(a[0].length == b.length) {
+            double[][] product = new double[a.length][b[0].length];
+            double [][] bT = transpose(b);
+            for (int i = 0; i < a.length; i++) {
+                for (int j = 0; j < b[0].length; j++) {
+                    product[i][j] = dotProduct(a[i], bT[j]);
+                }
+            }
+            return product;
+        }
+        return null; //Matrix multiplication not defined
+    }
+
+    /**
+     * Normalizes the matrix such that the sum of all matrix elements equals 1
+     * @param matrix
+     * @return the normalized matrix
+     */
+    private double[][] normalize(double[][] matrix) {
+        double sum = 0;
+        for(int i =0; i<matrix.length; i++) {
+            for(int j =0; j<matrix[0].length; j++) {
+                sum+=matrix[i][j];
+            }
+        }
+        for(int i =0; i<matrix.length; i++) {
+            for(int j =0; j<matrix[0].length; j++) {
+                matrix[i][j] = matrix[i][j]/sum;
+            }
+        }
+        return matrix;
+    }
+    /**
+     * Calculates dot product of two vectors
+     * @param a first vector
+     * @param bT the transpose of the second vector
+     * @return dot product of a and b
+     */
+    private double dotProduct(double[] a, double[] bT) {
+        double sum=0;
+        for(int i =0; i<a.length; i++) {
+            sum+=a[i]*bT[i];
+        }
+        return sum;
+    }
     /**
      * Computes the summed probability to be in position
      * Prob = P(position, North) + P(position, South) + P(position, East) + P(position, West)

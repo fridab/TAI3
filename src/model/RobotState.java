@@ -40,10 +40,10 @@ public class RobotState {
         }
         if(pos.getRow() == target.pos.getRow()) { //Moving in this row
             if(pos.getCol() > target.pos.getCol()) { //Moving east
-                return (heading == 2? 0.7:0.3);
+                return (heading == 1? 0.7:0.3);
             }
             if(pos.getCol() < target.pos.getCol()) { //Moving west
-                return (heading == 4? 0.7:0.3);
+                return (heading == 3? 0.7:0.3);
             } else {
                 return 0;
             }
@@ -51,14 +51,15 @@ public class RobotState {
         }
         if(pos.getCol() == target.pos.getCol()) { //Moving in this col
             if (pos.getRow() > target.pos.getRow()) { //Moving south
-                return (heading == 3 ? 0.7 : 0.3);
+                return (heading == 2 ? 0.7 : 0.3);
             }
             if (pos.getRow() < target.pos.getRow()) { //Moving north
-                return (heading == 1 ? 0.7 : 0.3);
+                return (heading == 0 ? 0.7 : 0.3);
             } else {
                 return 0;
             }
         }
-        return 3; //Are there any cases we haven't covered?
+
+        return 0;
     }
 }

@@ -35,7 +35,11 @@ public class RobotLocalizer implements EstimatorInterface {
     public void update() {
         r.step();
         latestReading = s.sensorReading();
-        model.filter(new Coordinate(latestReading[0], latestReading[1]));
+        if(latestReading != null) {
+            model.filter(new Coordinate(latestReading[0], latestReading[1]));
+        } else {
+            model.filter(null);
+        }
     }
 
     public int[] getCurrentTruePosition() {

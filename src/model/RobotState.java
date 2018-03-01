@@ -11,18 +11,18 @@ public class RobotState {
     public RobotState(Coordinate pos, int heading) {
         this.pos = pos;
         this.heading = heading;
-        switch(heading) {
+        switch (heading) {
             case 0:
-                dirH=Direction.NORTH;
+                dirH = Direction.NORTH;
                 break;
             case 1:
-                dirH=Direction.EAST;
+                dirH = Direction.EAST;
                 break;
             case 2:
-                dirH=Direction.SOUTH;
+                dirH = Direction.SOUTH;
                 break;
             case 3:
-                dirH=Direction.WEST;
+                dirH = Direction.WEST;
                 break;
         }
     }
@@ -94,154 +94,76 @@ public class RobotState {
      * @return P of getting to target from this state in room r
      */
     public double getTo(RobotState target, Room r) {
-        if (this.equals(target)) { //It will always move
-            return 0;
-        }
-        if (Math.abs(pos.getRow() - target.pos.getRow()) > 1) { //Too far away
-            return 0;
-        }
-        if (Math.abs(pos.getCol() - target.pos.getCol()) > 1) { //Too far away
-            return 0;
-        }
-
-        Direction dir;
-        Direction dirLeft;
-        Direction dirRight;
+        int dir;
+        int dirLeft;
+        int dirRight;
+        int dirUnder;
 
         if (target.heading == 0) {
-            dir = NORTH;
-            dirLeft = WEST;
-            dirRight = EAST;
+            dir = Robot.NORTH;
+            dirLeft = Robot.WEST;
+            dirRight = Robot.EAST;
 
         } else if (target.heading == 1) {
-            dir = EAST;
-            dirLeft = NORTH;
-            dirRight = SOUTH;
+            dir = Robot.EAST;
+            dirLeft = Robot.NORTH;
+            dirRight = Robot.SOUTH;
 
         } else if (target.heading == 2) {
-            dir = SOUTH;
-            dirLeft = EAST;
-            dirRight = WEST;
+            dir = Robot.SOUTH;
+            dirLeft = Robot.EAST;
+            dirRight = Robot.WEST;
 
         } else if (target.heading == 3) {
-            dir = WEST;
-            dirLeft = SOUTH;
-            dirRight = NORTH;
+            dir = Robot.WEST;
+            dirLeft = Robot.SOUTH;
+            dirRight = Robot.NORTH;
 
         } else {
-            dir = null;
-            dirLeft = null;
-            dirRight = null;
+            dir = -1;
+            dirLeft = -1;
+            dirRight = -1;
 
+        }
+
+        if (!isPossibleMove(target, dirLeft, dirRight)) { //It will always move
+            return 0;
         }
 
         if (r.wallEncountered(target.pos, dir)) {
-            if (r.wallEncountered(target.pos, dirLeft) || r.wallEncountered(target.pos, dirRight)) {
+
+            if (r.wallEncountered(target.pos, dirLeft)) {
+                if (target.heading == dirRight) {
+                    return 0.5;
+                }
+            } else if (r.wallEncountered(target.pos, dirRight)) {
 
             } else {
 
             }
 
         } else {
-               // return heading == dir ? 0.7 : 0.1;
-            }
-            return 0;
-        }
 
-
-    public double getTo(RobotState target, Robot r, Room room) {
-        if (this.equals(target)) { //It will always move
-            return 0;
+            return heading == dir ? 0.7 : 0.1;
         }
-        if (Math.abs(pos.getRow() - target.pos.getRow()) > 1) { //Too far away
         return 0;
     }
-        if (Math.abs(pos.getCol() - target.pos.getCol()) > 1) { //Too far away
-        return 0;
-    }
-        int[][] ls = r.getLS(pos.getPosition());
-        int possibleMoves=0;
-        switch(ls[0].length) {
-            case 3:
-                possibleMoves = 2;
-                break;
-            case 5:
-                possibleMoves = 3;
-                break;
-            case 8:
-                possibleMoves = 4;
-                break;
-        }
-        if(room.wallEncountered(pos, dirH)) {
-            double prob = (double)1/possibleMoves;
-            if (pos.getRow() == target.pos.getRow()) { //Moving in this row
-                if (pos.getCol() < target.pos.getCol()) { //Moving east
-                    if (target.heading == 1) {
-                        return prob;
-                    }
-                    return 0;
-                }
-                if (pos.getCol() > target.pos.getCol()) { //Moving west
-                    if (target.heading == 3) {
-                        return prob;
-                    }
-                    return 0;
 
-                }
-            }
-            if (pos.getCol() == target.pos.getCol()) { //Moving in this col
-                if (pos.getRow() < target.pos.getRow()) { //Moving south
-                    if (target.heading == 2) {
-                        return prob;
-                    }
-                    return 0;
-                }
-                if (pos.getRow() > target.pos.getRow()) { //Moving north
-                    if (target.heading == 0) {
-                        return prob;
-                    }
-                    return 0;
-                }
-            }
-        }
-        //Wall not encountered
-        double prob = 1/(double)(possibleMoves-1);
-        if (pos.getRow() == target.pos.getRow()) { //Moving in this row
-            if (pos.getCol() < target.pos.getCol()) { //Moving east
-                if (target.heading == 1) {
-                    return heading == 1 ? 0.7 : prob;
-                }
-                return 0;
-            }
-            if (pos.getCol() > target.pos.getCol()) { //Moving west
-                if (target.heading == 3) {
-                    return heading == 3 ? 0.7 : prob;
-                }
-                return 0;
 
-            }
+    private boolean isPossibleMove(RobotState target, int dirLeft, int dirRight) {
+        if (this.equals(target) || Math.abs(pos.getRow() - target.pos.getRow()) > 1 || Math.abs(pos.getCol() - target.pos.getCol()) > 1) {
+            return false;
+        } else if (true) {
+
         }
-        if (pos.getCol() == target.pos.getCol()) { //Moving in this col
-            if (pos.getRow() < target.pos.getRow()) { //Moving south
-                if (target.heading == 2) {
-                    return heading == 2 ? 0.7 : prob;
-                }
-                return 0;
-            }
-            if (pos.getRow() > target.pos.getRow()) { //Moving north
-                if (target.heading == 0) {
-                    return heading == 0 ? 0.7 : prob;
-                }
-                return 0;
-            }
-        }
-        return 3;
+        return true;
     }
 
     private RobotState[] getPossibleMoves() {
         if(possibleMoves != null) {
             return possibleMoves;
         }
+            return null;
 
         //Koordinat ovanför
         //Koordinat nedanför
@@ -249,4 +171,3 @@ public class RobotState {
         //Koordinate till höger
     }
 }
-

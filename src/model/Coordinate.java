@@ -42,4 +42,11 @@ public class Coordinate {
         return ("row: " + row + "\t col: " + col);
     }
 
+    public boolean equals(Object o) {
+        if(! (o instanceof Coordinate)) {
+            return false;
+        }
+        return ((Coordinate)o).row == row && ((Coordinate)o).col == col;
+    }
+
 }

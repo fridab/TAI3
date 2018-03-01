@@ -31,7 +31,6 @@ public class HMM {
 
     /**
      * Computes all state estimates when given evidence e
-     *
      * @param e the evidence/observation
      */
     public void filter(Coordinate e) {
@@ -48,18 +47,21 @@ public class HMM {
             }
         }
 
-        double[][] o = createDiagonalMatrix(obsProb.get(index));
-        double[][] tT = transpose(T);
-
+        //Get matrices
+        double[][] o = Matrix.createDiagonalMatrix(obsProb.get(index));
+        double[][] tT = Matrix.transpose(T);
         double[][] futureF = new double[1][states.length];
-        //futureF = alpha * o*tT* previousF; NEEDS TO BE IMPLEMENTED
-        double[][] otT = multiplyMatrices(o, tT);
+
+        //Matrix calculations
+        double[][] otT = Matrix.multiplyMatrices(o, tT);
         double[][] fMatrix = new double[previousF.length][1];
         for (int i = 0; i < previousF.length; i++) {
             fMatrix[i][0] = previousF[i];
         }
-        futureF = multiplyMatrices(otT, fMatrix);
-        futureF = normalize(futureF);
+        futureF = Matrix.multiplyMatrices(otT, fMatrix);
+        futureF = Matrix.normalize(futureF);
+
+        //Store estimate for future use
         for (int i = 0; i < futureF.length; i++) {
             previousF[i] = futureF[i][0];
         }
@@ -67,97 +69,8 @@ public class HMM {
     }
 
     /**
-     * Creates a diagonal matrix out of the diagonal vector
-     *
-     * @param vector
-     * @return
-     */
-    private double[][] createDiagonalMatrix(double[] vector) {
-        double[][] matrix = new double[vector.length][vector.length];
-        for (int i = 0; i < vector.length; i++) {
-            matrix[i][i] = vector[i];
-        }
-        return matrix;
-    }
-
-    /**
-     * Transposes a matrix
-     *
-     * @param t
-     * @return
-     */
-    private double[][] transpose(double[][] t) {
-        double[][] tT = new double[t[0].length][t.length];
-        for (int i = 0; i < t.length; i++) {
-            for (int j = 0; j < t[0].length; j++) {
-                tT[j][i] = t[i][j];
-            }
-        }
-        return tT;
-    }
-
-    /**
-     * Multiplies matrices a and b. a needs to have the same number of cols as b has rows
-     * Resulting matrix will have dimension [a.rows b.cols]
-     *
-     * @param a matrix a
-     * @param b matrix b
-     * @return matrix ab
-     */
-    private double[][] multiplyMatrices(double[][] a, double[][] b) {
-        if (a[0].length == b.length) {
-            double[][] product = new double[a.length][b[0].length];
-            double[][] bT = transpose(b);
-            for (int i = 0; i < a.length; i++) {
-                for (int j = 0; j < b[0].length; j++) {
-                    product[i][j] = dotProduct(a[i], bT[j]);
-                }
-            }
-            return product;
-        }
-        return null; //Matrix multiplication not defined
-    }
-
-    /**
-     * Normalizes the matrix such that the sum of all matrix elements equals 1
-     *
-     * @param matrix
-     * @return the normalized matrix
-     */
-    private double[][] normalize(double[][] matrix) {
-        double sum = 0;
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[0].length; j++) {
-                sum += matrix[i][j];
-            }
-        }
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[0].length; j++) {
-                matrix[i][j] = matrix[i][j] / sum;
-            }
-        }
-        return matrix;
-    }
-
-    /**
-     * Calculates dot product of two vectors
-     *
-     * @param a  first vector
-     * @param bT the transpose of the second vector
-     * @return dot product of a and b
-     */
-    private double dotProduct(double[] a, double[] bT) {
-        double sum = 0;
-        for (int i = 0; i < a.length; i++) {
-            sum += a[i] * bT[i];
-        }
-        return sum;
-    }
-
-    /**
      * Computes the summed probability to be in position
      * Prob = P(position, North) + P(position, South) + P(position, East) + P(position, West)
-     *
      * @param position the position of the state
      * @return
      */
@@ -248,7 +161,7 @@ public class HMM {
      * Here stored as vector
      */
     private void initObsProb() {
-        for (int i = 0; i < obs.length; i++) { //All possible observations have their own matrix
+        for (int i = 0; i < obs.length; i++) { //All possible observations have their own matrix (vector)
             double[] probs = new double[states.length]; //Store probabilities in 1D-array
             for (int j = 0; j < states.length; j++) { //For every possible robot state
                 probs[j] = sensor.getProb(obs[i], states[j]); //Calculate the probability and add to vector

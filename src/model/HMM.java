@@ -223,11 +223,11 @@ public class HMM {
     private double getProbability(int i, int j) {
         RobotState current = states[j];
         RobotState previous = states[i];
-        return previous.getTo(current);
+        return previous.getTo(current, robot, new Room(5));
     }
 
     public double getProbability(RobotState i, RobotState j) {
-        return i.getTo(j);
+        return i.getTo(j, robot, new Room(5));
     }
 
     /**

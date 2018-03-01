@@ -102,26 +102,31 @@ public class RobotState {
             dir = Robot.NORTH;
             dirLeft = Robot.WEST;
             dirRight = Robot.EAST;
+            dirUnder = Robot.SOUTH;
 
         } else if (target.heading == 1) {
             dir = Robot.EAST;
             dirLeft = Robot.NORTH;
             dirRight = Robot.SOUTH;
+            dirUnder = Robot.EAST;
 
         } else if (target.heading == 2) {
             dir = Robot.SOUTH;
             dirLeft = Robot.EAST;
             dirRight = Robot.WEST;
+            dirUnder = Robot.NORTH;
 
         } else if (target.heading == 3) {
             dir = Robot.WEST;
             dirLeft = Robot.SOUTH;
             dirRight = Robot.NORTH;
+            dirUnder = Robot.EAST;
 
         } else {
             dir = -1;
             dirLeft = -1;
             dirRight = -1;
+            dirUnder = -1;
 
         }
 
@@ -130,20 +135,19 @@ public class RobotState {
         }
 
         if (r.wallEncountered(target.pos, dir)) {
-
             if (r.wallEncountered(target.pos, dirLeft)) {
-                if (target.heading == dirRight) {
+                if (target.heading == dirRight || target.heading == dirUnder) {
                     return 0.5;
                 }
             } else if (r.wallEncountered(target.pos, dirRight)) {
-
+                if (target.heading == dirLeft || target.heading == dirUnder) {
+                    return 0.5;
+                }
             } else {
-
+                return 1/3;
             }
-
         } else {
-
-            return heading == dir ? 0.7 : 0.1;
+            return heading == dir ? 0.7 : 0.3;
         }
         return 0;
     }

@@ -11,9 +11,11 @@ public class HMM {
     private Robot robot;
     private Sensor sensor;
     private double[] previousF;
+    private Room r;
 
-    public HMM(Robot robot, Sensor sensor) {
+    public HMM(Robot robot, Sensor sensor, Room r) {
         this.robot = robot;
+        this.r = r;
         states = new RobotState[robot.getRoomSize() * robot.getRoomSize() * Robot.headings];
         initObservations();
         initStates();
@@ -219,7 +221,7 @@ public class HMM {
         T = new double[states.length][states.length];
         for (int i = 0; i < T.length; i++) {
             for (int j = 0; j < T[0].length; j++) {
-                T[i][j] = getProbability(i, j);
+                T[i][j] = getProbability(i, j, r);
             }
         }
     }
@@ -229,15 +231,15 @@ public class HMM {
      * @param j current state
      * @return probability [0,1] to be in j given i
      */
-    private double getProbability(int i, int j) {
+    private double getProbability(int i, int j, Room r) {
         RobotState current = states[j];
         RobotState previous = states[i];
-        return previous.getTo(current);
+        return previous.getTo(current, r);
 
     }
 
     public double getProbability(RobotState i, RobotState j) {
-        return i.getTo(j);
+        return i.getTo(j, r);
     }
 
     /**

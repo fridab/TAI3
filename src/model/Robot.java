@@ -13,7 +13,7 @@ public class Robot {
     public static final int headings = 4;
 
     public Robot(int roomSize) {
-
+        this.roomSize = roomSize;
         this.room = new Room(roomSize);
         pos = new Coordinate(2, 2);
         heading = newRandomHeading();
@@ -97,5 +97,9 @@ public class Robot {
 
     public int[][] getLS2(int[] pos) {
         return room.getLS2(pos);
+    }
+
+    public Room getRoom(){
+        return room;
     }
 }

@@ -49,6 +49,7 @@ public class Sensor {
         int[][] ls2 = r.getLS2(pos.getPosition());
         ArrayList<Coordinate> lsCoord = new ArrayList<Coordinate>();
         ArrayList<Coordinate> ls2Coord = new ArrayList<Coordinate>();
+
         for(int i = 0 ; i<ls.length; i++) {
             lsCoord.add(new Coordinate(ls[i][0], ls[i][1]));
         }

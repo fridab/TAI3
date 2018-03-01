@@ -20,7 +20,7 @@ public class Main {
 		 */
 		//EstimatorInterface l = new DummyLocalizer( 1, 1, 1);
 		Robot r = new Robot(5);
-		EstimatorInterface l = new RobotLocalizer(r, new Sensor(r));
+		EstimatorInterface l = new RobotLocalizer(r, new Sensor(r), r.getRoom());
 
 		RobotLocalizationViewer viewer = new RobotLocalizationViewer( l);
 

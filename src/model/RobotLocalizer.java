@@ -10,12 +10,14 @@ public class RobotLocalizer implements EstimatorInterface {
     private Robot r;
     private Sensor s;
     private HMM model;
+    private Room room;
     private int[] latestReading;
 
-    public RobotLocalizer(Robot r, Sensor s) {
+    public RobotLocalizer(Robot r, Sensor s, Room room) {
         this.r = r;
         this.s = s;
-        this.model = new HMM(r,s);
+        this.room = room;
+        this.model = new HMM(r,s, room);
     }
 
 

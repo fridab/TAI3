@@ -159,15 +159,52 @@ public class RobotState {
         return true;
     }
 
-    private RobotState[] getPossibleMoves() {
+    private RobotState[] getPossibleMoves(int roomsize) {
         if(possibleMoves != null) {
             return possibleMoves;
         }
-            return null;
+        int index=0;
+        RobotState[] temp = new RobotState[4];
+        Coordinate copy = new Coordinate(pos.getRow(), pos.getCol());
+        copy.up();
+        if(validPos(copy, roomsize )) {
+            RobotState valid = new RobotState(copy, 0);
+            temp[index] = valid;
+            index++;
+        }
+        copy.down();
+        copy.down();
+        if(validPos(copy, roomsize )) {
+            RobotState valid = new RobotState(copy, 2);
+            temp[index] = valid;
+            index++;
+        }
+        copy.up();
+        copy.left();
+        if(validPos(copy, roomsize )) {
+            RobotState valid = new RobotState(copy, 3);
+            temp[index] = valid;
+            index++;
+        }
+        copy.right();
+        copy.right();
+        if(validPos(copy, roomsize )) {
+            RobotState valid = new RobotState(copy, 2);
+            temp[index] = valid;
+            index++;
+        }
+        possibleMoves = new RobotState[index];
+        for(int i = 0; i<index; i++) {
+            possibleMoves[i] = temp[i];
+        }
+        
+        return possibleMoves;
+    }
 
-        //Koordinat ovanför
-        //Koordinat nedanför
-        //Koordinat till vänster
-        //Koordinate till höger
+    private boolean validPos(Coordinate c, int roomsize) {
+        if (c.getRow() < 0 || c.getCol() < 0 || c.getRow() >= roomsize || c.getCol() >= roomsize) {
+            return false;
+        }
+        return true;
     }
 }

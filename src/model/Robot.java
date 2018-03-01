@@ -13,7 +13,6 @@ public class Robot {
     public static final int headings = 4;
 
     public Robot(int roomSize) {
-
         this.room = new Room(roomSize);
         pos = new Coordinate(2,2);
         heading = newRandomHeading();

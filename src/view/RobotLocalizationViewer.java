@@ -153,7 +153,7 @@ public class RobotLocalizationViewer {
 	}
 
 	public synchronized void updateOneStep( ){		
-		if( runFlag) { //SHOULD BE RUNFLAG IN ORDER TO RUN?
+		if(initFlag) {
 			loc.update();
 			int[] tXY = loc.getCurrentTruePosition();
 			int[] sXY = loc.getCurrentReading();

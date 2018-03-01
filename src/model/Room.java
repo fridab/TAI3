@@ -39,6 +39,7 @@ public class Room {
         int size = getSize();
         for (int row = -1; row <= 1; row++) {
             for (int col = -1; col <= 1; col++) {
+                //if current pos or outside room, don't store row and col
                 if ((row == 0 && col == 0) || pos[0] + row < 0 || pos[1] + col < 0 || pos[0] + row >= size || pos[1] + col >= size) {
                     continue;
                 }
@@ -66,12 +67,16 @@ public class Room {
         for (int row = -2; row <= 2; row++) {
             for (int col = -2; col <= 2; col++) {
 
+                //If not in outer ring
+                if((row>-2 && row <2) && (col>-2&&col<2)) {
+                    continue;
+                }
                 if((row == -1 && col == -1) || (row == -1 && col == 0) || (row == -1 && col == 1) ||
                         (row == 0 && col == -1) || (row == 0 && col == 0) || (row == 0 && col == 1) ||
                         (row == 1 && col == -1) || (row == 1 && col == 0) || (row == 1 && col == 1)){
                     continue;
                 }
-
+                //If outside room
                 if (pos[0] + row < 0 || pos[1] + col < 0 || pos[0] + row >= size || pos[1] + col >= size) {
                     continue;
                 }

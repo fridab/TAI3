@@ -9,10 +9,13 @@ import control.EstimatorInterface;
 public class RobotLocalizer implements EstimatorInterface {
     private Robot r;
     private Sensor s;
+    private HMM model;
+    private int[] latestReading;
 
     public RobotLocalizer(Robot r, Sensor s) {
         this.r = r;
         this.s = s;
+        this.model = new HMM(r,s);
     }
 
 
@@ -31,7 +34,12 @@ public class RobotLocalizer implements EstimatorInterface {
 
     public void update() {
         r.step();
-        //Sensorn ska uppdateras
+        latestReading = s.sensorReading();
+        if(latestReading != null) {
+            model.filter(new Coordinate(latestReading[0], latestReading[1]));
+        } else {
+            model.filter(null);
+        }
     }
 
     public int[] getCurrentTruePosition() {
@@ -39,18 +47,18 @@ public class RobotLocalizer implements EstimatorInterface {
     }
 
     public int[] getCurrentReading() {
-        return s.sensorReading();
+        return latestReading;
     }
 
     public double getCurrentProb(int x, int y) {
-        return 0;
+        return model.getProb(new Coordinate(x,y));
     }
 
     public double getOrXY(int rX, int rY, int x, int y, int h) {
-        return 0;
+        return s.getProb(new Coordinate(rX,rY), new RobotState(new Coordinate(x,y) ,h));
     }
 
     public double getTProb(int x, int y, int h, int nX, int nY, int nH) {
-        return 0;
+        return model.getProbability(new RobotState(new Coordinate(x,y),h), new RobotState(new Coordinate(nX,nY),nH));
     }
 }

@@ -18,6 +18,7 @@ public class Robot {
 
 
     public Robot(int roomSize) {
+
         this.roomSize = roomSize;
         this.room = new Room(roomSize);
         pos = new Coordinate(2, 2);

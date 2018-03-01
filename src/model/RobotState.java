@@ -5,10 +5,25 @@ import static model.Direction.*;
 public class RobotState {
     private int heading;
     private Coordinate pos;
+    private Direction dirH;
 
     public RobotState(Coordinate pos, int heading) {
         this.pos = pos;
         this.heading = heading;
+        switch (heading) {
+            case 0:
+                dirH = Direction.NORTH;
+                break;
+            case 1:
+                dirH = Direction.EAST;
+                break;
+            case 2:
+                dirH = Direction.SOUTH;
+                break;
+            case 3:
+                dirH = Direction.WEST;
+                break;
+        }
     }
 
     /**
@@ -117,16 +132,17 @@ public class RobotState {
         if (r.wallEncountered(target.pos, dir)) {
 
             if (r.wallEncountered(target.pos, dirLeft)) {
-                if (target.heading == dirRight || target.heading == dirUnder) {
+                if (target.heading == dirRight) {
                     return 0.5;
                 }
-            } else if(r.wallEncountered(target.pos, dirRight)){
+            } else if (r.wallEncountered(target.pos, dirRight)) {
 
             } else {
 
             }
 
         } else {
+
             return heading == dir ? 0.7 : 0.1;
         }
         return 0;
@@ -134,9 +150,9 @@ public class RobotState {
 
 
     private boolean isPossibleMove(RobotState target, int dirLeft, int dirRight) {
-        if(this.equals(target) || Math.abs(pos.getRow() - target.pos.getRow()) > 1 || Math.abs(pos.getCol() - target.pos.getCol()) > 1){
+        if (this.equals(target) || Math.abs(pos.getRow() - target.pos.getRow()) > 1 || Math.abs(pos.getCol() - target.pos.getCol()) > 1) {
             return false;
-        } else if(){
+        } else if (true) {
 
         }
         return true;

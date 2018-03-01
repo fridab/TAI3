@@ -64,7 +64,6 @@ public class Robot {
         }
         //Step
         move();
-        System.out.println("Current position: " + pos + " heading: " + heading);
     }
 
     public void move() {

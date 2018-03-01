@@ -6,6 +6,7 @@ public class RobotState {
     private int heading;
     private Coordinate pos;
     private Direction dirH;
+    private RobotState[] possibleMoves;
 
     public RobotState(Coordinate pos, int heading) {
         this.pos = pos;
@@ -235,6 +236,17 @@ public class RobotState {
             }
         }
         return 3;
+    }
+
+    private RobotState[] getPossibleMoves() {
+        if(possibleMoves != null) {
+            return possibleMoves;
+        }
+
+        //Koordinat ovanför
+        //Koordinat nedanför
+        //Koordinat till vänster
+        //Koordinate till höger
     }
 }
 

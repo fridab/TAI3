@@ -22,8 +22,11 @@ public class RobotLocalizationViewer {
 	private EstimatorInterface loc;
 	private int sXCount, sYCount, tXCount, tYCount, tHCount;
 	private boolean runFlag, initFlag;
+	private int correct, nbrGo;
 	
 	public RobotLocalizationViewer( EstimatorInterface l) {
+		correct=0;
+		nbrGo=0;
 		loc = l;
 		this.rows = loc.getNumRows();
 		this.cols = loc.getNumCols();
@@ -138,7 +141,9 @@ public class RobotLocalizationViewer {
 		
 	}
 	
-
+	public double getAccuracy() {
+		return (double)correct/nbrGo;
+	}
 	public synchronized void setRunFlag( boolean run) {
 		runFlag = run;
 		notifyAll();
@@ -161,8 +166,11 @@ public class RobotLocalizationViewer {
 				updateViewer(  tXY[0], tXY[1], sXY[0], sXY[1]);	
 			else
 				updateViewer(  tXY[0], tXY[1], -1, -1);	
-					
+
+			System.out.println("Nbr of runs: " + nbrGo + "\t Nbr of correct estimates: " + correct + "\nAccuracy:" + (double)correct/nbrGo);
 		}
+
+
 	}
 	
 	public synchronized void updateContinuously() throws InterruptedException {
@@ -227,7 +235,12 @@ public class RobotLocalizationViewer {
 		states[tX][tY][4].setBackground(Color.black);
 		if( sX != -1)
 			states[sX][sY][4].setBackground(Color.cyan);
-		
+
+		if(tX == maxX && tY == maxY) {
+			correct++;
+		}
+
+		nbrGo++;
 		viewer.repaint();				
 	}
 

@@ -5,12 +5,17 @@ import java.util.Random;
 import static model.Direction.*;
 
 public class Robot {
-    private Direction heading;
+    private int heading;
     private Coordinate pos;
     private Random rand = new Random();
     private int roomSize;
     private Room room;
     public static final int headings = 4;
+    public static final int NORTH = 0;
+    public static final int EAST = 1;
+    public static final int SOUTH = 2;
+    public static final int WEST = 3;
+
 
     public Robot(int roomSize) {
         this.roomSize = roomSize;
@@ -20,8 +25,8 @@ public class Robot {
     }
 
 
-    public Direction newRandomHeading() { //JUST NU KAN MAN FÅ SAMMA IGEN - SE TILL ATT DET BLIR EN NY
-        Direction newHeading;
+    public int newRandomHeading() { //JUST NU KAN MAN FÅ SAMMA IGEN - SE TILL ATT DET BLIR EN NY
+        int newHeading;
         do {
             int choice = rand.nextInt(4);
             switch (choice) {
@@ -38,7 +43,7 @@ public class Robot {
                     newHeading = WEST;
                     break;
                 default:
-                    newHeading = null;
+                    newHeading = -1;
                     break;
             }
         }
@@ -99,7 +104,7 @@ public class Robot {
         return room.getLS2(pos);
     }
 
-    public Room getRoom(){
+    public Room getRoom() {
         return room;
     }
 }

@@ -12,21 +12,20 @@ public class Room {
         return size;
     }
 
-    public boolean wallEncountered(Coordinate pos, Direction heading) {
-        if (pos.getRow() == 0 && heading.equals(Direction.NORTH)) {
+    public boolean wallEncountered(Coordinate pos, int heading) {
+        if (pos.getRow() == 0 && heading == Robot.NORTH) {
             return true;
         }
 
-        if (pos.getRow() == size-1 && heading.equals(Direction.SOUTH)) {
+        if (pos.getRow() == size - 1 && heading == Robot.SOUTH) {
 
             return true;
         }
-        if (pos.getCol() == 0 && heading.equals(Direction.WEST)) {
+        if (pos.getCol() == 0 && heading == Robot.WEST) {
             return true;
         }
 
-        if (pos.getCol() == size -1 && heading.equals(Direction.EAST)) {
-
+        if (pos.getCol() == size - 1 && heading == Robot.EAST) {
             return true;
         }
         return false;
@@ -68,12 +67,12 @@ public class Room {
             for (int col = -2; col <= 2; col++) {
 
                 //If not in outer ring
-                if((row>-2 && row <2) && (col>-2&&col<2)) {
+                if ((row > -2 && row < 2) && (col > -2 && col < 2)) {
                     continue;
                 }
-                if((row == -1 && col == -1) || (row == -1 && col == 0) || (row == -1 && col == 1) ||
+                if ((row == -1 && col == -1) || (row == -1 && col == 0) || (row == -1 && col == 1) ||
                         (row == 0 && col == -1) || (row == 0 && col == 0) || (row == 0 && col == 1) ||
-                        (row == 1 && col == -1) || (row == 1 && col == 0) || (row == 1 && col == 1)){
+                        (row == 1 && col == -1) || (row == 1 && col == 0) || (row == 1 && col == 1)) {
                     continue;
                 }
                 //If outside room

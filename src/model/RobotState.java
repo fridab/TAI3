@@ -78,57 +78,67 @@ public class RobotState {
      * @return P of getting to target from this state in room r
      */
     public double getTo(RobotState target, Room r) {
-        if (this.equals(target)) { //It will always move
-            return 0;
-        }
-        if (Math.abs(pos.getRow() - target.pos.getRow()) > 1) { //Too far away
-            return 0;
-        }
-        if (Math.abs(pos.getCol() - target.pos.getCol()) > 1) { //Too far away
-            return 0;
-        }
-
-        Direction dir;
-        Direction dirLeft;
-        Direction dirRight;
+        int dir;
+        int dirLeft;
+        int dirRight;
+        int dirUnder;
 
         if (target.heading == 0) {
-            dir = NORTH;
-            dirLeft = WEST;
-            dirRight = EAST;
+            dir = Robot.NORTH;
+            dirLeft = Robot.WEST;
+            dirRight = Robot.EAST;
 
         } else if (target.heading == 1) {
-            dir = EAST;
-            dirLeft = NORTH;
-            dirRight = SOUTH;
+            dir = Robot.EAST;
+            dirLeft = Robot.NORTH;
+            dirRight = Robot.SOUTH;
 
         } else if (target.heading == 2) {
-            dir = SOUTH;
-            dirLeft = EAST;
-            dirRight = WEST;
+            dir = Robot.SOUTH;
+            dirLeft = Robot.EAST;
+            dirRight = Robot.WEST;
 
         } else if (target.heading == 3) {
-            dir = WEST;
-            dirLeft = SOUTH;
-            dirRight = NORTH;
+            dir = Robot.WEST;
+            dirLeft = Robot.SOUTH;
+            dirRight = Robot.NORTH;
 
         } else {
-            dir = null;
-            dirLeft = null;
-            dirRight = null;
+            dir = -1;
+            dirLeft = -1;
+            dirRight = -1;
 
+        }
+
+        if (!isPossibleMove(target, dirLeft, dirRight)) { //It will always move
+            return 0;
         }
 
         if (r.wallEncountered(target.pos, dir)) {
-            if (r.wallEncountered(target.pos, dirLeft) || r.wallEncountered(target.pos, dirRight)) {
+
+            if (r.wallEncountered(target.pos, dirLeft)) {
+                if (target.heading == dirRight || target.heading == dirUnder) {
+                    return 0.5;
+                }
+            } else if(r.wallEncountered(target.pos, dirRight)){
 
             } else {
 
             }
 
         } else {
-                return heading == dir ? 0.7 : 0.1;
-            }
-            return 0;
+            return heading == dir ? 0.7 : 0.1;
         }
+        return 0;
     }
+
+
+    private boolean isPossibleMove(RobotState target, int dirLeft, int dirRight) {
+        if(this.equals(target) || Math.abs(pos.getRow() - target.pos.getRow()) > 1 || Math.abs(pos.getCol() - target.pos.getCol()) > 1){
+            return false;
+        } else if(){
+
+        }
+        return true;
+    }
+}

@@ -147,11 +147,11 @@ public class HMM {
     private double getProbability(int i, int j, Room r) {
         RobotState current = states[j];
         RobotState previous = states[i];
-        return previous.getTo(current, robot, new Room(5));
+        return previous.getTo(current, r);
     }
 
     public double getProbability(RobotState i, RobotState j) {
-        return i.getTo(j, robot, new Room(5));
+        return i.getTo(j, r);
 
     }
 

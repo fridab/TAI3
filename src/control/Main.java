@@ -31,6 +31,6 @@ public class Main {
 		 */
 		new LocalizationDriver( 500, viewer).start();
 
-		System.out.println(viewer.getAccuracy());
+		//System.out.println(viewer.getAccuracy());
 	}
 }	

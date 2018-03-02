@@ -141,10 +141,7 @@ public class RobotLocalizationViewer {
 		viewer.setVisible( true);
 		
 	}
-	
-	public double getAccuracy() {
-		return (double)correct/nbrGo;
-	}
+
 	public synchronized void setRunFlag( boolean run) {
 		runFlag = run;
 		notifyAll();
@@ -243,6 +240,7 @@ public class RobotLocalizationViewer {
 		}
 
 		nbrGo++;
+		System.out.println("Current manhattan dist: " + getManhattanDist(maxX,maxY, tX, tY));
 		totMDist += getManhattanDist(maxX,maxY, tX, tY);
 		viewer.repaint();				
 	}
@@ -333,7 +331,7 @@ public class RobotLocalizationViewer {
 	 * @return the manhattan distance between (eX, eY) and (tX, tY)
 	 */
 	public int getManhattanDist(int eX, int eY, int tX, int tY) {
-		return Math.abs(eX-eY) + Math.abs(tX-tY);
+		return Math.abs(eX-tX) + Math.abs(eY-tY);
 	}
 	
 

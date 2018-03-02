@@ -9,6 +9,9 @@ public class Coordinate {
         this.col=col;
     }
 
+    /**
+     * @return position as an int-vector [row, col]
+     */
     public int[] getPosition() {
         return new int[]{row, col};
     }
@@ -21,18 +24,37 @@ public class Coordinate {
         return col;
     }
 
+    /**
+     * Moves coordinate one row up
+     * @return this coordinate
+     */
     public Coordinate up() {
         row--;
         return this;
     }
+
+    /**
+     * Moves coordinate one column to the right
+     * @return this coordinate
+     */
     public Coordinate right() {
         col++;
         return this;
     }
+
+    /**
+     * Moves coordinate one row down
+     * @return this coordinate
+     */
     public Coordinate down() {
         row++;
         return this;
     }
+
+    /**
+     * Moves coordinate one column to the left
+     * @return this coordinate
+     */
     public Coordinate left() {
         col--;
         return this;

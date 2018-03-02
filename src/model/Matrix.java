@@ -5,7 +5,6 @@ public class Matrix {
     /**
      * Multiplies matrices a and b. a needs to have the same number of cols as b has rows
      * Resulting matrix will have dimension [a.rows b.cols]
-     *
      * @param a matrix a
      * @param b matrix b
      * @return matrix ab
@@ -26,7 +25,6 @@ public class Matrix {
 
     /**
      * Normalizes the matrix such that the sum of all matrix elements equals 1
-     *
      * @param matrix
      * @return the normalized matrix
      */
@@ -48,7 +46,6 @@ public class Matrix {
 
     /**
      * Calculates dot product of two vectors
-     *
      * @param a  first vector
      * @param bT the transpose of the second vector
      * @return dot product of a and b
@@ -63,9 +60,8 @@ public class Matrix {
 
     /**
      * Transposes a matrix
-     *
      * @param t
-     * @return
+     * @return the transpose of t
      */
     public static double[][] transpose(double[][] t) {
         double[][] tT = new double[t[0].length][t.length];
@@ -79,9 +75,8 @@ public class Matrix {
 
     /**
      * Creates a diagonal matrix out of the diagonal vector
-     *
-     * @param vector
-     * @return
+     * @param vector the vector defining the diagonal elements
+     * @return resulting matrix
      */
     public static double[][] createDiagonalMatrix(double[] vector) {
         double[][] matrix = new double[vector.length][vector.length];

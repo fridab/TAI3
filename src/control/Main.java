@@ -1,6 +1,5 @@
 package control;
 
-import model.DummyLocalizer;
 import model.Robot;
 import model.RobotLocalizer;
 import model.Sensor;
@@ -18,9 +17,8 @@ public class Main {
 		 * generate you own localiser / estimator wrapper here to plug it into the 
 		 * graphics class.
 		 */
-		//EstimatorInterface l = new DummyLocalizer( 1, 1, 1);
-		Robot r = new Robot(5);
-		EstimatorInterface l = new RobotLocalizer(r, new Sensor(r), r.getRoom());
+		Robot r = new Robot(8);
+		EstimatorInterface l = new RobotLocalizer(r, new Sensor(r));
 
 		RobotLocalizationViewer viewer = new RobotLocalizationViewer( l);
 
@@ -31,6 +29,5 @@ public class Main {
 		 */
 		new LocalizationDriver( 500, viewer).start();
 
-		//System.out.println(viewer.getAccuracy());
 	}
 }	

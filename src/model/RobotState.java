@@ -1,30 +1,13 @@
 package model;
 
-import static model.Direction.*;
-
 public class RobotState {
     private int heading;
     private Coordinate pos;
-    private Direction dirH;
     private RobotState[] possibleMoves;
 
     public RobotState(Coordinate pos, int heading) {
         this.pos = pos;
         this.heading = heading;
-        switch (heading) {
-            case 0:
-                dirH = Direction.NORTH;
-                break;
-            case 1:
-                dirH = Direction.EAST;
-                break;
-            case 2:
-                dirH = Direction.SOUTH;
-                break;
-            case 3:
-                dirH = Direction.WEST;
-                break;
-        }
     }
 
     /**
@@ -43,108 +26,25 @@ public class RobotState {
     }
 
     /**
-     * @param target
-     * @return P of getting to target from this state in room r
-     */
-//    public double getTo(RobotState target) {
-//        if (this.equals(target)) { //It will always move
-//            return 0;
-//        }
-//        if (Math.abs(pos.getRow() - target.pos.getRow()) > 1) { //Too far away
-//            return 0;
-//        }
-//        if (Math.abs(pos.getCol() - target.pos.getCol()) > 1) { //Too far away
-//            return 0;
-//        }
-//        if (pos.getRow() == target.pos.getRow()) { //Moving in this row
-//            if (pos.getCol() < target.pos.getCol()) { //Moving east
-//                if (target.heading == 1) {
-//                    return heading == 1 ? 0.7 : 0.3;
-//                }
-//                return 0;
-//            }
-//            if (pos.getCol() > target.pos.getCol()) { //Moving west
-//                if (target.heading == 3) {
-//                    return heading == 3 ? 0.7 : 0.3;
-//                }
-//                return 0;
-//
-//            }
-//        }
-//        if (pos.getCol() == target.pos.getCol()) { //Moving in this col
-//            if (pos.getRow() < target.pos.getRow()) { //Moving south
-//                if (target.heading == 2) {
-//                    return heading == 2 ? 0.7 : 0.3;
-//                }
-//                return 0;
-//            }
-//            if (pos.getRow() > target.pos.getRow()) { //Moving north
-//                if (target.heading == 0) {
-//                    return heading == 0 ? 0.7 : 0.3;
-//                }
-//                    return 0;
-//            }
-//        }
-//
-//        return 0;
-//    }
-
-//    int dir;
-//    int dirLeft;
-//    int dirRight;
-//    int dirUnder;
-//
-//        if (target.heading == 0) {
-//        dir = Robot.NORTH;
-//        dirLeft = Robot.WEST;
-//        dirRight = Robot.EAST;
-//        dirUnder = Robot.SOUTH;
-//
-//    } else if (target.heading == 1) {
-//        dir = Robot.EAST;
-//        dirLeft = Robot.NORTH;
-//        dirRight = Robot.SOUTH;
-//        dirUnder = Robot.EAST;
-//
-//    } else if (target.heading == 2) {
-//        dir = Robot.SOUTH;
-//        dirLeft = Robot.EAST;
-//        dirRight = Robot.WEST;
-//        dirUnder = Robot.NORTH;
-//
-//    } else if (target.heading == 3) {
-//        dir = Robot.WEST;
-//        dirLeft = Robot.SOUTH;
-//        dirRight = Robot.NORTH;
-//        dirUnder = Robot.EAST;
-//
-//    } else {
-//        dir = -1;
-//        dirLeft = -1;
-//        dirRight = -1;
-//        dirUnder = -1;
-//
-//    }
-
-    /**
-     * @param target
+     * Calculates probability to get from this robot state to another
+     * @param target the state to move to
      * @return P of getting to target from this state in room r
      */
     public double getTo(RobotState target, Room r) {
         RobotState[] pos = getPossMoves(this, r);
 
-        if (pos != null && contain(target, pos)) {
-            if (target.heading == this.heading) {
+        if (pos != null && contain(target, pos)) { //If target is a possible move
+            if (target.heading == this.heading) {  //And we haven't switched directions
                 return 0.7;
             }
             boolean flag = false;
             for (int i = 0; i < pos.length; i++) {
-                if (pos[i].heading == this.heading) {
+                if (pos[i].heading == this.heading) { //If a "0.7-move" is in the list of possible moves
                     flag = true;
                 }
             }
             if (flag) {
-                return 0.3 / (pos.length - 1);
+                return 0.3 / (pos.length - 1); //Divide the 30% prob between the other possible moves
             } else {
                 return (double) 1 / pos.length;
             }
@@ -152,7 +52,6 @@ public class RobotState {
         }
         return 0;
     }
-
 
     private boolean contain(RobotState target, RobotState[] pos) {
         for (int i = 0; i < pos.length; i++) {
@@ -164,61 +63,7 @@ public class RobotState {
 
     }
 
-    private boolean isPossibleMove(RobotState target) {
-        if (this.equals(target) || Math.abs(pos.getRow() - target.pos.getRow()) > 1 || Math.abs(pos.getCol() - target.pos.getCol()) > 1) {
-            return false;
-        }
-        return true;
-    }
-
-    private RobotState[] getPossibleMoves(int roomsize) {
-        if (possibleMoves != null) {
-            return possibleMoves;
-        }
-        int index = 0;
-        RobotState[] temp = new RobotState[4];
-        Coordinate copy = new Coordinate(pos.getRow(), pos.getCol());
-        copy.up();
-        if (validPos(copy, roomsize)) {
-            RobotState valid = new RobotState(copy, 0);
-            temp[index] = valid;
-            index++;
-        }
-        copy.down();
-        copy.down();
-        if (validPos(copy, roomsize)) {
-            RobotState valid = new RobotState(copy, 2);
-            temp[index] = valid;
-            index++;
-        }
-        copy.up();
-        copy.left();
-        if (validPos(copy, roomsize)) {
-            RobotState valid = new RobotState(copy, 3);
-            temp[index] = valid;
-            index++;
-        }
-        copy.right();
-        copy.right();
-        if (validPos(copy, roomsize)) {
-            RobotState valid = new RobotState(copy, 2);
-            temp[index] = valid;
-            index++;
-        }
-        possibleMoves = new RobotState[index];
-        for (int i = 0; i < index; i++) {
-            possibleMoves[i] = temp[i];
-        }
-        return possibleMoves;
-    }
-
     private RobotState[] getPossMoves(RobotState target, Room r) {
-        int forward = target.heading;
-        int left = getHeadingLeft(target);
-        int right = getHeadingRight(target);
-        int backward = getHeadingDown(target);
-        RobotState[] temp;
-
         if (hasWallFL(target, r)) {
             return getWallFL(target);
         } else if (hasWallFR(target, r)) {

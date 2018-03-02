@@ -2,11 +2,9 @@ package model;
 
 import java.util.Random;
 
-import static model.Direction.*;
-
 public class Robot {
     private int heading;
-    private Coordinate pos;
+    private Coordinate pos; //Current position of robot
     private Random rand = new Random();
     private int roomSize;
     private Room room;
@@ -18,47 +16,33 @@ public class Robot {
 
 
     public Robot(int roomSize) {
-
         this.roomSize = roomSize;
         this.room = new Room(roomSize);
-        pos = new Coordinate(2, 2);
+
+        //Pick random starting state
+        pos = new Coordinate(rand.nextInt(roomSize), rand.nextInt(roomSize));
         heading = newRandomHeading();
     }
 
 
-    public int newRandomHeading() { //JUST NU KAN MAN FÅ SAMMA IGEN - SE TILL ATT DET BLIR EN NY
+    public int newRandomHeading() {
         int newHeading;
         do {
-            int choice = rand.nextInt(4);
-            switch (choice) {
-                case 0:
-                    newHeading = NORTH;
-                    break;
-                case 1:
-                    newHeading = EAST;
-                    break;
-                case 2:
-                    newHeading = SOUTH;
-                    break;
-                case 3:
-                    newHeading = WEST;
-                    break;
-                default:
-                    newHeading = -1;
-                    break;
-            }
-        }
-        while (newHeading == heading);
+            newHeading = rand.nextInt(4);
+        } while (newHeading == heading);
 
-        if (room.wallEncountered(pos, newHeading)) {
+        if (room.wallEncountered(pos, newHeading)) { //Badly chosen new heading, try a new one
             return newRandomHeading();
         }
         return newHeading;
     }
 
-
+    /**
+     * Simulates a robot step
+     * Moves one tile, and possibly chooses new heading
+     */
     public void step() {
-        //Pick new heading
+        //Pick new heading or stick with the same
         if (room.wallEncountered(pos, heading)) {
             heading = newRandomHeading();
         } else {
@@ -96,10 +80,20 @@ public class Robot {
         return room.getSize();
     }
 
+    /**
+     * Determines the ring surrounding pos
+     * @param pos
+     * @return the coordinates in the surrounding ring
+     */
     public int[][] getLS(int[] pos) {
         return room.getLS(pos);
     }
 
+    /**
+     * Determines "second ring" surrounding pos
+     * @param pos
+     * @return the coordinates in the second surrounding ring
+     */
     public int[][] getLS2(int[] pos) {
         return room.getLS2(pos);
     }

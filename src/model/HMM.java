@@ -7,22 +7,25 @@ public class HMM {
     private RobotState[] states;    //Possible states
     private List<double[]> obsProb; //List with probabilities for all possible observations
     private Coordinate[] obs;       //Possible observations
-    private double[][] T;
+    private double[][] T;           //Transition model
     private Robot robot;
     private Sensor sensor;
-    private double[] previousF;
+    private double[] previousF;     //Latest f-vector
     private Room r;
 
     public HMM(Robot robot, Sensor sensor, Room r) {
         this.robot = robot;
         this.r = r;
+        this.sensor = sensor;
+
         states = new RobotState[robot.getRoomSize() * robot.getRoomSize() * Robot.headings];
         initObservations();
         initStates();
         setTransitionModel();
-        obsProb = new ArrayList<double[]>(obs.length); //21 possible observations
-        this.sensor = sensor;
+        obsProb = new ArrayList<double[]>(obs.length); //One probability vector for each observation
         initObsProb();
+
+        //Set P(X0)
         previousF = new double[states.length];
         for (int i = 0; i < previousF.length; i++) {
             previousF[i] = ((double) 1 / states.length); //Assuming all states have equal probabilities at first
@@ -37,7 +40,7 @@ public class HMM {
         //Find which evidence object we have
         int index = -1;
         for (int i = 0; i < obs.length; i++) {
-            if (obs[i] == null && e == null) {
+            if (obs[i] == null && e == null) { //Evidence "nothing"
                 index = i;
                 break;
             }
@@ -50,12 +53,12 @@ public class HMM {
         //Get matrices
         double[][] o = Matrix.createDiagonalMatrix(obsProb.get(index));
         double[][] tT = Matrix.transpose(T);
-        double[][] futureF = new double[1][states.length];
+        double[][] futureF = new double[1][states.length]; //Make it a 2D array to be able to use Matrix class
 
         //Matrix calculations
         double[][] otT = Matrix.multiplyMatrices(o, tT);
-        double[][] fMatrix = new double[previousF.length][1];
-        for (int i = 0; i < previousF.length; i++) {
+        double[][] fMatrix = new double[previousF.length][1]; //Make it a 2D array to be able to use Matrix class
+        for (int i = 0; i < previousF.length; i++) { //Create a copy of f-vector
             fMatrix[i][0] = previousF[i];
         }
         futureF = Matrix.multiplyMatrices(otT, fMatrix);
@@ -72,7 +75,7 @@ public class HMM {
      * Computes the summed probability to be in position
      * Prob = P(position, North) + P(position, South) + P(position, East) + P(position, West)
      * @param position the position of the state
-     * @return
+     * @return probability [0,1] for robot to be in position
      */
     public double getProb(Coordinate position) {
         double sum = 0;
@@ -97,6 +100,7 @@ public class HMM {
 
     /**
      * Lists possible robot states in attribute states
+     * Relies on that attribute obs has been initialized
      */
     private void initStates() {
         states = new RobotState[robot.getRoomSize() * robot.getRoomSize() * Robot.headings]; //Number of possible states
@@ -121,7 +125,7 @@ public class HMM {
                 obs[index] = new Coordinate(i, j);
                 index++;
             }
-            obs[index] = null; //NOTHING
+            obs[index] = null; //observation "nothing"
         }
     }
 
@@ -140,8 +144,8 @@ public class HMM {
     }
 
     /**
-     * @param i previous state
-     * @param j current state
+     * @param i index of previous state in attribute states
+     * @param j index current state in attribute states
      * @return probability [0,1] to be in j given i
      */
     private double getProbability(int i, int j, Room r) {
@@ -150,15 +154,19 @@ public class HMM {
         return previous.getTo(current, r);
     }
 
+    /**
+     * @param i previous state
+     * @param j current state
+     * @return probability [0,1] to be in j given i
+     */
     public double getProbability(RobotState i, RobotState j) {
         return i.getTo(j, r);
 
     }
 
-
     /**
      * Initializes the diagonal elements for all observation matrices
-     * Here stored as vector
+     * Stored as vectors
      */
     private void initObsProb() {
         for (int i = 0; i < obs.length; i++) { //All possible observations have their own matrix (vector)

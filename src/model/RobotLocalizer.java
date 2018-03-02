@@ -13,10 +13,10 @@ public class RobotLocalizer implements EstimatorInterface {
     private Room room;
     private int[] latestReading;
 
-    public RobotLocalizer(Robot r, Sensor s, Room room) {
+    public RobotLocalizer(Robot r, Sensor s) {
         this.r = r;
         this.s = s;
-        this.room = room;
+        this.room = r.getRoom();
         this.model = new HMM(r,s, room);
     }
 
@@ -32,6 +32,9 @@ public class RobotLocalizer implements EstimatorInterface {
         return Robot.headings;
     }
 
+    /**
+     * Triggers one robot step, one sensor reading and one forward step
+     */
     public void update() {
         r.step();
         latestReading = s.sensorReading();

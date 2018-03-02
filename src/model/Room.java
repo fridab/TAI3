@@ -18,9 +18,9 @@ public class Room {
         }
 
         if (pos.getRow() == size - 1 && heading == Robot.SOUTH) {
-
             return true;
         }
+
         if (pos.getCol() == 0 && heading == Robot.WEST) {
             return true;
         }
@@ -28,6 +28,7 @@ public class Room {
         if (pos.getCol() == size - 1 && heading == Robot.EAST) {
             return true;
         }
+
         return false;
 
     }
@@ -70,11 +71,7 @@ public class Room {
                 if ((row > -2 && row < 2) && (col > -2 && col < 2)) {
                     continue;
                 }
-                if ((row == -1 && col == -1) || (row == -1 && col == 0) || (row == -1 && col == 1) ||
-                        (row == 0 && col == -1) || (row == 0 && col == 0) || (row == 0 && col == 1) ||
-                        (row == 1 && col == -1) || (row == 1 && col == 0) || (row == 1 && col == 1)) {
-                    continue;
-                }
+
                 //If outside room
                 if (pos[0] + row < 0 || pos[1] + col < 0 || pos[0] + row >= size || pos[1] + col >= size) {
                     continue;

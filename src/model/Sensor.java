@@ -12,7 +12,7 @@ public class Sensor {
     }
 
     /**
-     * Gives a sensor reading for the robot it belongs
+     * Simulates a sensor reading for the robot it belongs
      * to given the sensor model and current position
      * @return a reading (row, col)
      */

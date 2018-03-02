@@ -20,11 +20,9 @@ public class RobotLocalizer implements EstimatorInterface {
         this.model = new HMM(r,s, room);
     }
 
-
     public int getNumRows() {
         return r.getRoomSize();
     }
-
 
     public int getNumCols() {
         return r.getRoomSize();

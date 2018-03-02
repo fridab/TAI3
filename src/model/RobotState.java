@@ -133,26 +133,36 @@ public class RobotState {
     public double getTo(RobotState target, Room r) {
         RobotState[] pos = getPossMoves(this, r);
 
-        if (pos != null) { //It will always move
+        if (pos != null && contain(target, pos)) {
+            if (target.heading == this.heading) {
+                return 0.7;
+            }
+            boolean flag = false;
             for (int i = 0; i < pos.length; i++) {
-                if (pos.length == 4 && pos[i].heading == target.heading) {
-                    return 0.7;
-                } else if (pos.length == 4) {
-                    return 0.1;
-                }
-
-                if (pos.length == 3) {
-                    return 1 / 3;
-                }
-
-                if (pos.length == 2) {
-                    return 0.5;
+                if (pos[i].heading == this.heading) {
+                    flag = true;
                 }
             }
+            if (flag) {
+                return 0.3 / (pos.length - 1);
+            } else {
+                return (double) 1 / pos.length;
+            }
+
         }
         return 0;
     }
 
+
+    private boolean contain(RobotState target, RobotState[] pos) {
+        for (int i = 0; i < pos.length; i++) {
+            if (pos[i].equals(target)) {
+                return true;
+            }
+        }
+        return false;
+
+    }
 
     private boolean isPossibleMove(RobotState target) {
         if (this.equals(target) || Math.abs(pos.getRow() - target.pos.getRow()) > 1 || Math.abs(pos.getCol() - target.pos.getCol()) > 1) {

@@ -197,7 +197,7 @@ public class RobotState {
         for(int i = 0; i<index; i++) {
             possibleMoves[i] = temp[i];
         }
-        
+
         return possibleMoves;
     }
 

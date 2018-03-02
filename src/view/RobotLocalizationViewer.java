@@ -22,11 +22,12 @@ public class RobotLocalizationViewer {
 	private EstimatorInterface loc;
 	private int sXCount, sYCount, tXCount, tYCount, tHCount;
 	private boolean runFlag, initFlag;
-	private int correct, nbrGo;
+	private int correct, nbrGo, totMDist;
 	
 	public RobotLocalizationViewer( EstimatorInterface l) {
 		correct=0;
 		nbrGo=0;
+		totMDist = 0;
 		loc = l;
 		this.rows = loc.getNumRows();
 		this.cols = loc.getNumCols();
@@ -168,6 +169,7 @@ public class RobotLocalizationViewer {
 				updateViewer(  tXY[0], tXY[1], -1, -1);	
 
 			System.out.println("Nbr of runs: " + nbrGo + "\t Nbr of correct estimates: " + correct + "\nAccuracy:" + (double)correct/nbrGo);
+			System.out.println("Average manhattan distance: " + (double) totMDist/nbrGo);
 		}
 
 
@@ -241,6 +243,7 @@ public class RobotLocalizationViewer {
 		}
 
 		nbrGo++;
+		totMDist += getManhattanDist(maxX,maxY, tX, tY);
 		viewer.repaint();				
 	}
 
@@ -319,6 +322,18 @@ public class RobotLocalizationViewer {
 		if( ++sYCount == cols || sXCount == -1)
 			sXCount++;
 				
+	}
+
+	/**
+	 * Calculates the manhattan distance for one step of the simulation
+	 * @param eX estimated X based on HMM
+	 * @param eY estimated Y based on HMM
+	 * @param tX true X
+	 * @param tY true Y
+	 * @return the manhattan distance between (eX, eY) and (tX, tY)
+	 */
+	public int getManhattanDist(int eX, int eY, int tX, int tY) {
+		return Math.abs(eX-eY) + Math.abs(tX-tY);
 	}
 	
 

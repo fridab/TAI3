@@ -93,4 +93,13 @@ public class Room {
         return ls2;
     }
 
+    /**
+     * @return coordinate object for (x,y) if (x,y) lies within the room, otherwise return null
+     */
+    public Coordinate getCoordinate(int x, int y) {
+        if(x<0 || y<0 || x>=size || y>= size) {
+            return null;
+        }
+        return new Coordinate(x,y);
+    }
 }

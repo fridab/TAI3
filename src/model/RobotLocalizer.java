@@ -58,7 +58,8 @@ public class RobotLocalizer implements EstimatorInterface {
     }
 
     public double getOrXY(int rX, int rY, int x, int y, int h) {
-        return s.getProb(new Coordinate(rX,rY), new RobotState(new Coordinate(x,y) ,h));
+        Coordinate reading = room.getCoordinate(rX, rY);
+        return s.getProb(reading, new RobotState(new Coordinate(x,y) ,h));
     }
 
     public double getTProb(int x, int y, int h, int nX, int nY, int nH) {
